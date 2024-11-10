@@ -1,7 +1,7 @@
 from celery import Celery
 import base64
 from requests.exceptions import HTTPError
-from fetchgithub import fetch_pr_files
+from fetchgithub import fetch_pr_diff
 from llm_review import llm_code_review
 
 celery_app = Celery("code_review_agent", broker="redis://localhost:6379/0", backend="redis://localhost:6379/0")
@@ -9,12 +9,12 @@ celery_app = Celery("code_review_agent", broker="redis://localhost:6379/0", back
 @celery_app.task(bind=True)
 def analyze_pr_task(self, repo_url, pr_number, github_token=None):
     try:
-        files = fetch_pr_files(repo_url, pr_number, github_token)
+        files = fetch_pr_diff(repo_url, pr_number, github_token)
         
         decoded_files = {}
         for file_name, encoded_content in files.items():
-            decoded_content = base64.b64decode(encoded_content).decode("utf-8")
-            decoded_files[file_name] = decoded_content
+            # decoded_content = base64.b64decode(encoded_content).decode("utf-8")
+            decoded_files[file_name] = encoded_content
 
         analysis_results = {"files": []}
         for file_name, code in decoded_files.items():

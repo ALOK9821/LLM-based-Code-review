@@ -1,6 +1,6 @@
 import requests
 
-def fetch_pr_files(repo_url, pr_number, github_token=None):
+def fetch_pr_diff(repo_url, pr_number, github_token=None):
     try:
         owner, repo = repo_url.rstrip("/").split("/")[-2:]
     except ValueError:
@@ -17,19 +17,18 @@ def fetch_pr_files(repo_url, pr_number, github_token=None):
     if response.status_code != 200:
         raise Exception(f"Failed to fetch PR files: {response.json().get('message', 'Unknown error')}")
 
- 
     files_data = response.json()
-    file_contents = {}
+    pr_changes = {}
 
     for file_info in files_data:
         file_path = file_info["filename"]
-        blob_url = file_info["contents_url"] 
+        patch = file_info.get("patch", "")
 
-        file_response = requests.get(blob_url, headers=headers)
-        if file_response.status_code == 200:
-            file_data = file_response.json()
-            file_contents[file_path] = file_data["content"] 
-        else:
-            raise Exception(f"Failed to fetch content for {file_path}: {file_response.json().get('message', 'Unknown error')}")
+        new_lines = []
+        for line in patch.splitlines():
+            if line.startswith("+") and not line.startswith("+++"):
+                new_lines.append(line[1:])  
 
-    return file_contents
+        pr_changes[file_path] = "\n".join(new_lines)
+
+    return pr_changes

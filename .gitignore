@@ -1,2 +1,6 @@
 rough.py
 .env
+__pycache__
+.pytest_cache
+services/__pycache__
+tests/__pycache__

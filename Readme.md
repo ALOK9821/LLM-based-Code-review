@@ -5,7 +5,7 @@
 
 - Asynchronous processing of code review tasks with Celery
 - Integration with GitHub to fetch pull request details
-- LLM API integration for code review analysis
+- GROQ LLM API integration for code review analysis
 - Result Caching 
 - Rate limiting 
 - Structured logging 

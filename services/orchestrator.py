@@ -19,7 +19,7 @@ def orchestrate(repo_url, pr_number, github_token=None):
             logger.info("Generating prompt for file", extra={"filename": filename})
             prompt = promptV1(per_file_content)
             
-            code_review = json.loads(get_pr_chat_completion(prompt=prompt, model='llama3-8b-8192'))
+            code_review = json.loads(get_pr_chat_completion(prompt=prompt))
             per_file_results.append(
                 {
                     "name": filename,

@@ -1,5 +1,5 @@
 # Code Review Agent
-- Application that analyzes GitHub pull requests using a FastAPI API. It leverages Celery for asynchronous task processing, Redis as a message broker, and Currently integrated with **GROQ** with LLM API for code analysis. 
+- Application that analyzes GitHub pull requests. It leverages Celery for asynchronous task processing, Redis as a message broker, and Currently integrated with **GROQ** with LLM API for code analysis. 
 ---
 ## Features Implemented
 

@@ -1,7 +1,7 @@
 import requests
 import re
 import os
-from prompt import promptV1
+from services.prompt import promptV1
 from groq import Groq
 
 # Initialize Groq client
